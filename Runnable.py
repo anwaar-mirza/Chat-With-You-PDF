@@ -151,41 +151,6 @@ class RunnableChatBotWithHistory:
     
 
 
-# if "store" not in st.session_state:
-#     st.session_state.store = {}
-
-# st.title("Chat With Your PDF")
-# st.write("This is a chat interface that allows you to interact with a PDF document.")
-# groq_api = st.text_input("Enter Groq API Key", type="password")
-# session_id = st.text_input("Session ID", value=f"default_session-{''.join(random.choices(string.hexdigits, k=10))}")
-# if groq_api:
-#     pdf_file = st.file_uploader("Select a PDF file", type="pdf")
-#     if pdf_file:
-#         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-#             temp_file.write(pdf_file.getvalue())
-#             path = temp_file.name
-    
-#         if "bot" not in st.session_state:
-#             st.session_state.bot = RunnableChatBotWithHistory(groq_api, path)
-#             session_history = st.session_state.bot.create_session_history(session_id)
-#             user_input = st.text_input("You:")
-#             if user_input:
-#                 response = st.session_state.bot.final_response(user_input, session_id)
-
-#                 st.write(st.session_state.store)
-#                 st.write("Assistant:", response['answer'])
-#                 st.write("Chat History:", session_history.messages)
-#         else:
-#             session_history = st.session_state.bot.create_session_history(session_id)
-#             user_input = st.text_input("You:")
-#             if user_input:
-#                 response = st.session_state.bot.final_response(user_input, session_id)
-
-#                 st.write(st.session_state.store)
-#                 st.write("Assistant:", response['answer'])
-#                 st.write("Chat History:", session_history.messages)
-
-
 st.title("Chat With Your PDF")
 st.write("This is a chat interface that allows you to interact with a PDF document.")
 
