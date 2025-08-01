@@ -7,3 +7,4 @@ pinecone
 streamlit
 python-dotenv
 PyPDF
+sentence-transformers
