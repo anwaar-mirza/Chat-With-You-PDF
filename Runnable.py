@@ -186,41 +186,46 @@ class RunnableChatBotWithHistory:
 #                 st.write("Chat History:", session_history.messages)
 
 
-if "store" not in st.session_state:
-    st.session_state.store = {}
-
 st.title("Chat With Your PDF")
 st.write("This is a chat interface that allows you to interact with a PDF document.")
 
+# === Initialize session state variables only once ===
+if "initialized" not in st.session_state:
+    st.session_state.store = {}
+    st.session_state.session_id = f"default_session-{''.join(random.choices(string.hexdigits, k=10))}"
+    st.session_state.bot = None
+    st.session_state.path = None
+    st.session_state.initialized = True  # flag to prevent re-running
+
+# === Session ID input ===
+session_id = st.text_input("Session ID", value=st.session_state.session_id)
+st.session_state.session_id = session_id  # allow user override
+
+# === API key input ===
 groq_api = st.text_input("Enter Groq API Key", type="password")
-session_id = st.text_input("Session ID", value=f"default_session-{''.join(random.choices(string.hexdigits, k=10))}")
 
-# Upload PDF
-pdf_file = st.file_uploader("Select a PDF file", type="pdf")
+# === PDF Upload & Bot Initialization ===
+if groq_api:
+    pdf_file = st.file_uploader("Select a PDF file", type="pdf")
+    if pdf_file and st.session_state.bot is None:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+            temp_file.write(pdf_file.getvalue())
+            st.session_state.path = temp_file.name
 
-# Load bot only once
-if groq_api and pdf_file and "bot" not in st.session_state:
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-        temp_file.write(pdf_file.getvalue())
-        path = temp_file.name
+        # 🔧 Replace this with actual bot creation logic
+        st.session_state.bot = RunnableChatBotWithHistory(groq_api, st.session_state.path)
 
-    st.session_state.bot = RunnableChatBotWithHistory(groq_api, path)
-    st.session_state.pdf_loaded = True
-
-# Only allow chatting after bot is initialized
-if st.session_state.get("pdf_loaded", False):
-    session_history = st.session_state.bot.create_session_history(session_id)
+# === Chat Interface ===
+if st.session_state.bot:
+    session_history = st.session_state.bot.create_session_history(st.session_state.session_id)
     user_input = st.text_input("You:")
-    
+
     if user_input:
-        with st.spinner("Thinking..."):
-            response = st.session_state.bot.final_response(user_input, session_id)
+        response = st.session_state.bot.final_response(user_input, st.session_state.session_id)
 
+        st.write(st.session_state.store)
         st.write("Assistant:", response['answer'])
-
-        st.write("Chat History:")
-        for msg in session_history.messages:
-            st.write(f"**{msg.type.capitalize()}**: {msg.content}")
+        st.write("Chat History:", session_history.messages)
 
 
 
