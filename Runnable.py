@@ -13,6 +13,8 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from dotenv import load_dotenv
 import streamlit as st
 import tempfile
+import string
+import random
 import os
 
 load_dotenv()
@@ -155,7 +157,7 @@ if "store" not in st.session_state:
 st.title("Chat With Your PDF")
 st.write("This is a chat interface that allows you to interact with a PDF document.")
 groq_api = st.text_input("Enter Groq API Key", type="password")
-session_id = st.text_input("Session ID", value="default_session")
+session_id = st.text_input("Session ID", value=f"default_session-{''.join(random.choices(string.hexdigits, k=10))}")
 if groq_api:
     pdf_file = st.file_uploader("Select a PDF file", type="pdf")
     if pdf_file:
