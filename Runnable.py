@@ -17,7 +17,7 @@ import os
 
 load_dotenv()
 
-os.environ['HF_TOKEN'] = os.getenv('HF_TOKEN')
+os.environ['HF_TOKEN'] = st.secrets['HF_TOKEN']
 
 
 class RunnableChatBotWithHistory:
