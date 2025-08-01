@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual Environments
+.env/
+.venv/
+venv/
+ENV/
+env.bak/
+env/
+
+# Streamlit
+.streamlit/*.toml
+.streamlit/config.toml
+.streamlit/secrets.toml
+.streamlit/cache/
+
+# Env files
+.env
+.env.*
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# PyCharm
+.idea/
+
+# Logs and data
+*.log
+*.csv
+*.sqlite3
+*.db
+
+# LangChain / Pinecone / Chat history
+cache/
+chat_history/
